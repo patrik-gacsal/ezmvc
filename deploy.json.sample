@@ -1,0 +1,10 @@
+{
+    "host":    "ftp.example.com",
+    "port":    21,
+    "ssl":     true,
+    "user":    "ftpuser",
+    "pass":    "secret",
+    "remote":  "/public_html/",
+    "base_url": "https://example.com",
+    "exclude": ["Config.php"]
+}

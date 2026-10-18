@@ -1,0 +1,44 @@
+# cocogitto configuration — https://docs.cocogitto.io/
+#
+# Versioning model for THIS framework:
+#   - The git tag is the single source of truth for the framework version.
+#   - Nothing in the source code holds a copy of it (no version constant, and
+#     composer.json intentionally has no `version` field — Packagist reads the tag).
+#   - `Config::VERSION` is the DOWNSTREAM APP's product version, not the framework's,
+#     and is never touched by this tooling.
+#
+# Release flow (manual trigger, GitHub Flow): see RELEASING.md.
+
+tag_prefix = "v"                # tags look like v1.2.3
+branch_whitelist = ["main"]     # releases are cut only from main
+ignore_merge_commits = true     # merge commits are never changelog entries
+ignore_fixup_commits = true     # stray fixup!/squash! commits are ignored
+
+# --- Which commit types appear in CHANGELOG.md ---------------------------------
+# Visible by default: feat (Features), fix (Bug Fixes), perf, revert.
+# Everything below is recognised & allowed by the commit-msg hook, but kept OUT of
+# the changelog — this is how "fixing a feat that doesn't exist yet", refactors,
+# docs churn, etc. stay out of the release notes while still being valid commits.
+[commit_types]
+chore    = { changelog_title = "Chores",        omit_from_changelog = true }
+refactor = { changelog_title = "Refactoring",   omit_from_changelog = true }
+docs     = { changelog_title = "Documentation", omit_from_changelog = true }
+test     = { changelog_title = "Tests",         omit_from_changelog = true }
+ci       = { changelog_title = "CI",            omit_from_changelog = true }
+build    = { changelog_title = "Build",         omit_from_changelog = true }
+style    = { changelog_title = "Style",         omit_from_changelog = true }
+
+[changelog]
+path = "CHANGELOG.md"
+authors = []
+remote = "github.com"
+owner = "patrik-gacsal"
+repository = "ezmvc"
+
+# --- Git hooks -----------------------------------------------------------------
+# Installed with `cog install-hook --all` AFTER cog is on your PATH (see RELEASING.md).
+# The commit-msg hook rejects any message that isn't a valid Conventional Commit.
+[git_hooks.commit-msg]
+script = """#!/bin/sh
+cog verify --file "$1"
+"""

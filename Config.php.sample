@@ -1,0 +1,51 @@
+<?php
+
+class Config {
+    // Swagger
+    const PRODUCT        = 'My Project';
+    const DESCRIPTION    = 'A project built with ezmvc';
+    const VERSION        = '0.1.0';
+    // Set false to disable the API docs. Re-run `ezmvc generate` after changing
+    // this: generate empties the publicly-served generated/swagger.json. (The docs
+    // UI hides immediately, but the spec file only updates on the next generate.)
+    const ENABLE_SWAGGER = true;
+    // The start page shown at the site root until a default page controller
+    // is configured. It lists the PHP version — set false in production.
+    const ENABLE_WELCOME_PAGE = true;
+
+    // Database
+    const DB_HOST = 'localhost';
+    const DB_NAME = 'my_database';
+    const DB_USER = 'db_user';
+    const DB_PASS = 'db_password';
+
+    // Base URL including trailing slash
+    const BASE_PATH = 'http://localhost/my-project/';
+
+    // Log file path prefix (date and .log extension appended automatically).
+    // Relative to the project root by default — no need to know or hardcode
+    // an absolute filesystem path, which often isn't obvious on shared hosting.
+    // An absolute path (e.g. '/var/log/my-project/log') works too.
+    const LOGFILE_PREFIX = 'logs/log';
+
+    // Address that receives an email for every fatal PHP error, or null for none
+    const ERROR_REPORT_EMAIL = null;
+
+    // API key used for AUTH_APIKEY authentication
+    const API_KEY = 'change-me';
+
+    // Session cookie name — keep it generic so the cookie doesn't fingerprint
+    // the stack to clients (e.g. 'sid', not 'ezmvc' or the telltale 'PHPSESSID').
+    const SESSION_NAME = 'sid';
+
+    // Host names (no scheme) allowed to call the API cross-origin with
+    // credentials, e.g. ['app.example.com']. Leave empty to disallow all
+    // cross-origin access — see index.php's apiHeaders().
+    const ENABLED_CLIENT_HOSTS = [];
+
+    // Mail — used by the commented-out Mail/Smtp lines in app.php
+    // const MAIL_FROM      = 'noreply@example.com';
+    // const MAIL_FROM_NAME = 'My Project';
+    // const MAIL_BCC       = '';
+    // const SMTP_HOST      = 'smtp.example.com';
+}

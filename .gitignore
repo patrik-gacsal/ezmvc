@@ -1,0 +1,44 @@
+/Config.php
+/Config.local.php
+/.claude/settings.local.json
+/logs/*
+!/logs/.htaccess
+/private/*
+!/private/.htaccess
+/vendor/
+/deploy.json
+/.ezmvc-deploy-state
+
+# Internal notes, never published
+/SECURITY.md
+
+# Local test project — kept on disk for re-running tests, never committed.
+# (The framework's own example views/templates below are NOT test artifacts.)
+/databases/*Db.php
+/entities/TestEntity*.php
+/dtos/TestEntity*Dto.php
+/controllers/ApiTestController.php
+/controllers/PageTestController.php
+/controllers/Test2Controller.php
+/requests/Test*.php
+/responses/Test*.php
+/views/TestView.php
+/views/TestLeafView.php
+/views/TestSingleView.php
+/templates/test.php
+/templates/test-leaf.php
+/templates/test-single.php
+/templates/test*.css
+
+# Generated at runtime by `ezmvc generate` — regenerable, not committed.
+/generated/routes.php
+/generated/swagger.json
+/generated/app.css
+
+# Third-party Swagger UI assets — never committed; fetched by `ezmvc swagger:mirror`
+# (or loaded from the pinned CDN as a fallback). swagger-ui.version is kept.
+/swagger/swagger-ui*.js
+/swagger/swagger-ui*.css
+/swagger/swagger-ui*.map
+/swagger/favicon-*.png
+/swagger/oauth2-redirect.html

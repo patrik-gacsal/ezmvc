@@ -1,0 +1,6 @@
+/* Nest every rule inside this selector so it cannot collide with another view's. */
+.padding-view {
+    &.p-sm { padding: .5rem; }
+    &.p-md { padding: 1rem; }
+    &.p-lg { padding: 2rem; }
+}

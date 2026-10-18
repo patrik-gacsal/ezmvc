@@ -1,0 +1,23 @@
+{
+    "name": "ezmvc/ezmvc",
+    "description": "Lightweight PHP MVC and REST API framework",
+    "keywords": ["mvc", "php", "framework", "rest", "api"],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "classmap": [
+            "core/",
+            "entities/",
+            "dtos/",
+            "databases/",
+            "requests/",
+            "responses/",
+            "services/",
+            "exceptions/",
+            "views/",
+            "controllers/"
+        ]
+    }
+}

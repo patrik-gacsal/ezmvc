@@ -1,0 +1,32 @@
+RewriteEngine on
+
+# Pass the Authorization header to PHP (required for JWT and API-key auth).
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+# No PHP runs from the public paths, so an uploaded script can't execute: it
+# gets the front controller's ordinary 404. Covers x.php/extra (PATH_INFO) and
+# x.php.jpg (handlers that match any extension). swagger/index.php is the one
+# script the Swagger UI needs.
+RewriteRule ^swagger/(?!index\.php$).*\.(php\d?|phtml|pht|phps|phar)([./]|$) index.php [END,NC]
+RewriteRule ^public/.*\.(php\d?|phtml|pht|phps|phar)([./]|$) index.php [END,NC]
+
+# Public paths — served directly. Add your own static dirs here, or just put
+# assets under public/. Two files inside generated/ are whitelisted by exact
+# name — swagger.json (the API spec the Swagger UI fetches) and app.css (the
+# concatenated view stylesheet); the rest of generated/, e.g. routes.php, is
+# NOT public.
+RewriteRule ^(public/|swagger/|favicon\.ico$|generated/(swagger\.json|app\.css)$) - [END]
+
+# Front controller. EVERY other request — unknown routes AND any real file
+# outside the public paths above (core/, Config.php, app.php, deploy.json,
+# .git/…) — is rewritten to index.php, which serves the app or a uniform 404.
+# Nothing outside the public paths is ever served directly, so probing for a
+# framework file returns the exact same 404 as a random path: no 403, and no
+# directory-structure disclosure. Requires Apache 2.4+ mod_rewrite.
+#
+# [END] (not [L]) is essential here: because there's no `!-f` guard, index.php
+# would otherwise be rewritten to itself on the internal redirect and loop until
+# Apache's redirect limit → 500. [END] stops the per-directory re-run, so the
+# rewritten index.php request is served without re-entering these rules.
+RewriteRule ^ index.php [END]
