@@ -27,6 +27,8 @@ the release binary:
    ```
    This installs a **commit-msg** hook that rejects any message which isn't a valid
    Conventional Commit. (The hook calls `cog`, which is why step 1 must come first.)
+   Skip this step when `.git/hooks/commit-msg` already exists, for instance from a git
+   template (`init.templateDir`): `cog install-hook` overwrites it.
 
 ---
 
