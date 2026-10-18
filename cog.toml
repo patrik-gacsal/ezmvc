@@ -11,10 +11,12 @@
 
 tag_prefix = "v"                # tags look like v1.2.3
 branch_whitelist = ["main"]     # releases are cut only from main
+disable_bump_commit = true      # a release is a tag on main, never a commit to it
+disable_changelog = true        # release notes live in GitHub Releases, not a committed file
 ignore_merge_commits = true     # merge commits are never changelog entries
 ignore_fixup_commits = true     # stray fixup!/squash! commits are ignored
 
-# --- Which commit types appear in CHANGELOG.md ---------------------------------
+# --- Which commit types appear in the release notes ----------------------------
 # Visible by default: feat (Features), fix (Bug Fixes), perf, revert.
 # Everything below is recognised & allowed by the commit-msg hook, but kept OUT of
 # the changelog — this is how "fixing a feat that doesn't exist yet", refactors,
@@ -29,7 +31,7 @@ build    = { changelog_title = "Build",         omit_from_changelog = true }
 style    = { changelog_title = "Style",         omit_from_changelog = true }
 
 [changelog]
-path = "CHANGELOG.md"
+template = "remote"             # commit and compare links in `cog changelog` output
 authors = []
 remote = "github.com"
 owner = "patrik-gacsal"
