@@ -72,31 +72,39 @@ Pre-1.0 this bumps the **minor** (0.x); post-1.0 it bumps the **major**.
 
 ## Cutting a release (manual)
 
-A release is a tag on `main` and nothing else: `cog.toml` sets `disable_bump_commit` and
-`disable_changelog`, so `cog bump` creates no commit and `main` only ever changes through
-pull requests.
-
-From an up-to-date `main`:
+A release reaches `main` through a pull request like any other change: `cog bump` runs on a
+`chore/release-vX.Y.Z` branch (the only branches besides `main` that `cog.toml`'s
+`branch_whitelist` allows), where it writes `CHANGELOG.md`, commits it and tags that commit.
 
 ```bash
 git switch main
 git pull
+cog bump --auto --dry-run              # prints the next version, e.g. 0.2.0
 
-cog bump --auto          # computes the next version from the commits since the last tag
-                         # and tags the current commit vX.Y.Z
-
-git push origin vX.Y.Z   # publish the tag
+git switch -c chore/release-v0.2.0
+cog bump --auto                        # writes CHANGELOG.md, commits it, tags v0.2.0
+git push -u origin chore/release-v0.2.0
 ```
 
-- Preview first without changing anything: `cog bump --auto --dry-run` (prints the version it
-  would pick), or `cog changelog` (shows the unreleased entries).
+Open a pull request and merge it with **"Create a merge commit"**. Rebase-merge and squash
+both replace the tagged commit with a new one, which would leave the tag pointing at a commit
+that is not on `main`. Once merged, publish the tag and delete the branch:
+
+```bash
+git push origin v0.2.0
+git switch main
+git pull
+git branch -d chore/release-v0.2.0
+```
+
+- Preview the release notes first with `cog changelog` (shows the unreleased entries).
 - Force a specific version instead of `--auto`: `cog bump --version 1.0.0`
   (or `--major` / `--minor` / `--patch`).
 
 ### After the tag is pushed
 
-- Create the **GitHub Release** for the tag, with the output of `cog changelog --at vX.Y.Z`
-  as the body. The GitHub Releases page is the project's changelog.
+- Create the **GitHub Release** for the tag; paste that version's section from `CHANGELOG.md`
+  as the body (or generate it with `cog changelog --at vX.Y.Z`).
 - **Packagist** picks up the new version automatically from the tag — no `composer.json`
   edit needed.
 
