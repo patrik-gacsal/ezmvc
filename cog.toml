@@ -10,7 +10,7 @@
 # Release flow (manual trigger, GitHub Flow): see RELEASING.md.
 
 tag_prefix = "v"                # tags look like v1.2.3
-branch_whitelist = ["main", "chore/release-*"]   # bumps run on a release branch, merged by PR
+branch_whitelist = ["chore/release"]   # cog bump runs only on the release branch, merged into main by PR
 ignore_merge_commits = true     # merge commits are never changelog entries
 ignore_fixup_commits = true     # stray fixup!/squash! commits are ignored
 

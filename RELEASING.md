@@ -72,29 +72,30 @@ Pre-1.0 this bumps the **minor** (0.x); post-1.0 it bumps the **major**.
 
 ## Cutting a release (manual)
 
-A release reaches `main` through a pull request like any other change: `cog bump` runs on a
-`chore/release-vX.Y.Z` branch (the only branches besides `main` that `cog.toml`'s
-`branch_whitelist` allows), where it writes `CHANGELOG.md`, commits it and tags that commit.
+Nothing is ever committed directly to `main`, a release included. `cog bump` runs only on a
+branch named `chore/release` (the one entry in `cog.toml`'s `branch_whitelist`), where it
+writes `CHANGELOG.md`, commits it and tags that commit; a pull request brings it into `main`.
 
 ```bash
 git switch main
 git pull
+git switch -c chore/release
 cog bump --auto --dry-run              # prints the next version, e.g. 0.2.0
-
-git switch -c chore/release-v0.2.0
 cog bump --auto                        # writes CHANGELOG.md, commits it, tags v0.2.0
-git push -u origin chore/release-v0.2.0
+git push -u origin chore/release
 ```
 
 Open a pull request and merge it with **"Create a merge commit"**. Rebase-merge and squash
 both replace the tagged commit with a new one, which would leave the tag pointing at a commit
-that is not on `main`. Once merged, publish the tag and delete the branch:
+that is not on `main`. Once merged, publish the tag and delete the branch, so the next
+release starts it fresh from `main`:
 
 ```bash
 git push origin v0.2.0
 git switch main
 git pull
-git branch -d chore/release-v0.2.0
+git branch -d chore/release
+git push origin --delete chore/release   # unless GitHub already deleted it after the merge
 ```
 
 - Preview the release notes first with `cog changelog` (shows the unreleased entries).
